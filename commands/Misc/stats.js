@@ -32,24 +32,24 @@ module.exports = {
                 iconURL: client.user.avatarURL(),
               })
               .setColor("#2f3136")
-              .addField(
-                ":earth_asia: Count:",
-                `\`\`\`asciidoc\n` +
+              .addField({
+                name: ":earth_asia: Count:",
+                value: `\`\`\`asciidoc\n` +
                   `• Server :: ${client.guilds.cache.size}\n` +
                   `• Channels :: ${client.channels.cache.size.toLocaleString()}\n` +
                   `• Users :: ${client.users.cache.size.toLocaleString()}\n` +
                   `\`\`\``
-              )
-              .addField(
-                "<:nodejs:570073411695673345> System:",
-                `\`\`\`asciidoc\n` +
+                })
+              .addField({
+                name: "<:nodejs:570073411695673345> System:",
+                value: `\`\`\`asciidoc\n` +
                   `• Langs :: Node.js ${process.version}\n` +
                   `• Libs :: Discord.js v${Discord.version}\n` +
                   `\`\`\``
-              )
-              .addField(
-                ":floppy_disk: Usage:",
-                `\`\`\`asciidoc\n` +
+            })
+              .addField({
+                name: ":floppy_disk: Usage:",
+                value: `\`\`\`asciidoc\n` +
                   `• CPU :: ${percent.toFixed(2)}%\n` +
                   `• Memory :: ${(process.memoryUsage().heapUsed / 1024 / 1024)
                     .toFixed(2)
@@ -64,22 +64,22 @@ module.exports = {
                   `• Bot Uptime :: Booted up ${uptime}\n` +
                   `• OS Uptime :: Booted up ${ouptime}\n` +
                   `\`\`\``
-              )
-              .addField(
-                "<:CPU:569348415264129057> CPU:",
-                `\`\`\`md\n` +
+                })
+              .addField({
+                name: "<:CPU:569348415264129057> CPU:",
+                value: `\`\`\`md\n` +
                   `${os.cpus().length}x ${os.cpus().map((i) => `${i.model}`)[0]}\n` +
                   `\`\`\``
-              )
-              .addField(
-                ":bar_chart: Other:",
-                `\`\`\`asciidoc\n` +
+                })
+              .addField({
+                name: ":bar_chart: Other:",
+                value: `\`\`\`asciidoc\n` +
                   `• Arch :: ${os.arch()}\n` +
                   `• Platform :: ${os.platform()}\n` +
                   `• Latency :: ${latency.toLocaleString()} ms\n` +
                   `• Websockets ping :: ${client.ws.ping.toLocaleString()} ms\n` +
                   `\`\`\``
-              )
+            })
               .setTimestamp()
               .setFooter({
                 text: `Replying to ${message.author.tag}`,
