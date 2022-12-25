@@ -24,10 +24,10 @@ module.exports = async (client, member) => {
                   • Created At :: ${new Date(member.user.createdTimestamp).toString()}    
               \`\`\``
       )
-      .setFooter(
-        `Member joined`,
-        `https://cdn.discordapp.com/emojis/574840956444999681.png?v=1`
-      )
+      .setFooter({
+        name: `Member joined`,
+        iconURL: `https://cdn.discordapp.com/emojis/574840956444999681.png?v=1`
+      })
       .setTimestamp();
   
     const memberEmbed = new Discord.EmbedBuilder()
@@ -42,7 +42,7 @@ module.exports = async (client, member) => {
                   you are advised to read the **Rules and Information** in the <#954175101371301960> channels.
               `
       )
-      .setFooter(`You are now in ${member.guild.memberCount} Members.`);
+      .setFooter({ name: `You are now in ${member.guild.memberCount} Members.` });
   
     const row = new Discord.ActionRowBuilder().addComponent(
       new Discord.ButtonBuilder()
