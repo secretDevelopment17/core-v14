@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
 
-module.exports = async (member) => {
+module.exports = async (client, member) => {
     const ch = client.channels.cache.get("954177761868664863");
     const welcomer = [
       `${member.user} just landed 🚀`,
