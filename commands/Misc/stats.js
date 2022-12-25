@@ -26,7 +26,7 @@ module.exports = {
             let start = message.createdTimestamp;
             let latency = Date.now() - start;
         
-            const embed = new Discord.MessageEmbed()
+            const embed = new Discord.EmbedBuilder()
               .setAuthor({
                 name: `${client.user.tag} Information`,
                 iconURL: client.user.avatarURL(),
