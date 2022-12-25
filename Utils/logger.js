@@ -1,9 +1,10 @@
 const chalk = require("chalk");
 const moment = require("moment");
+const momentTz = require("moment-timezone");
 
 module.exports = class Logger {
 	static log (content, type = "info") {
-		const date = `${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+		const date = `${momentTz().tz("Asia/Jakarta").format("ddd MMM Do YYYY HH:mm:ss")}`;
 		switch (type) {
 		// Check the message type and then print him in the console
 		case "info": {

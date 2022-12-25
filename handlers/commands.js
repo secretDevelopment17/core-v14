@@ -10,7 +10,7 @@ module.exports = (client) => {
             const command = require(`../commands/${dir}/${file}`);
             if (command.name) {
                 client.commands.set(command.name, command);
-                client.logger.log(`> ➕ • Command ${command.name} from ${command.category} category is now loaded.`, "cmd")
+                client.logger.log(`> 🔃 • Loaded Command ${command.name} [${command.category}] `, "cmd")
             } else {
                 client.logger.log(`${file} - ❌  -> missing a help.name, or help.name is not a string.`, "warn");
                 continue;
@@ -18,5 +18,5 @@ module.exports = (client) => {
             client.commands.set(command.name, command);
         }
     });
-    client.logger.log(`> ✅ • Loaded Successfully [COMMAND]`, "success");
+    client.logger.log(`> ✅ • All COMMAND successfully loaded`, "success");
 };

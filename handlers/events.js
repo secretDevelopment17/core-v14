@@ -9,11 +9,11 @@ module.exports = (client) => {
             const Event = require(`../events/${file}`);
             Event.event = Event.event || file.replace(".js", "")
             client.on(file.split(".")[0], (...args) => Event(client, ...args));
-            client.logger.log(`> ➕ • Events on listener ${file} has been added.`, "event");
+            client.logger.log(`> 🔃 • Loaded event on ${file}`, "event");
         } catch (err) {
             client.logger.log("Error While loading", "warn")
             client.logger.log(err, "error");
         }
     }
-    client.logger.log(`> ✅ • Loaded Successfully [EVENT]`, "success");
+    client.logger.log(`> ✅ • All EVENT successfully loaded`, "success");
 };
