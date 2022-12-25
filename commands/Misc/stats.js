@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const config = require('../../config.json');
+const cpuStat = require("cpu-stat");
 const momentTz = require("moment-timezone");
 const moment = require("moment");
 require("moment-duration-format");
