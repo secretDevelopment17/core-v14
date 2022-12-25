@@ -16,7 +16,7 @@ module.exports = async (client, member) => {
     const logsEmbed = new Discord.EmbedBuilder()
       .setTitle(`[\`${member.guild.memberCount}\`] Member joined.`)
       .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
-      .setColor("GREEN")
+      .setColor("#00FF00")
       .setDescription(
         `\`\`\`asciidoc
                   • Username :: ${member.user.username} | #${member.user.discriminator}
@@ -31,7 +31,7 @@ module.exports = async (client, member) => {
       .setTimestamp();
   
     const memberEmbed = new Discord.EmbedBuilder()
-      .setColor("#2f3136")
+      .setColor(client.config.color)
       .setThumbnail(member.guild.iconURL({ dynamic: true, size: 4096 }))
       .setDescription(
         `
@@ -54,7 +54,7 @@ module.exports = async (client, member) => {
     );
   
     const embed = new Discord.EmbedBuilder()
-      .setColor("GREEN")
+      .setColor("#00FF00")
       .setDescription(`<a:Join:593588419087695872> | ${welcomer[random]}`);
   
     client.channels.cache.get("954176559332327494").send(logsEmbed);
