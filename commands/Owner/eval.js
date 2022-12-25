@@ -8,7 +8,6 @@ module.exports = {
     aliases: ["ev"],
     description: "evaluation you code.",
     category: "Owner",
-    cooldown: 3,
     run: async (client, message, args) => {
             
         if (message.author.id !== config.ownerID) return message.channel.send('Can\'t execute this command!');

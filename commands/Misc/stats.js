@@ -1,6 +1,6 @@
-const discord = require('discord.js');
+const Discord = require('discord.js');
 const config = require('../../config.json');
-const timezone = require("moment-timezone");
+const momentTz = require("moment-timezone");
 const moment = require("moment");
 require("moment-duration-format");
 const ms = require("ms");
@@ -10,52 +10,116 @@ const packageJson = require("../../package.json");
 module.exports = {
 
     name: "stats",
-    aliases: [],
+    aliases: ["st"],
     description: "Get bot's real time ping status",
     category: "Misc",
-    cooldown: 5,
     run: async (client, message, args) => {
-
-        if (!message.guild.members.me.permissions.has("EmbedLinks")) return message.channel.send({
-            content: "I do not have the **MESSAGE_EMBED_LINKS** permission in this channel.\nPlease enable it."
-        });
-
-        try {
-            const duration = moment.duration(client.uptime).format("**D [D], H [H], m [M], s [S]**");
-
-            const embed = new discord.EmbedBuilder()
-                .setTitle(`⚙ • System Statistics`)
-                .setThumbnail(client.user.displayAvatarURL())
-                .setColor(config.color)
-                .setDescription(`
-\`\`\`asciidoc
-• Platform - Arch     :: ${process.platform} - ${process.arch}
-• Bot Uptime          :: ${duration}
-• Memory Usage        :: ${formatBytes(process.memoryUsage.rss())}
-• Process Uptime      :: ${ms(Math.round(process.uptime() * 1000), { long: true })}
-• OS Uptime           :: ${ms(os.uptime() ?? 0, { long: true })}
-• Node.js version     :: ${process.version}
-• Discord.js version  :: v${discord.version}
-• Bot Version         :: v${packageJson.version}
-\`\`\`
-            `)
-                .setFooter({ text: `Requested by ${message.author.username} | Today at ${timezone.tz("Asia/Jakarta").format("HH:mma") + " "}`, iconURL: message.author.displayAvatarURL({ 
-                        forceStatic: true 
-                    }) 
-                })
-            message.channel.send({ embeds: [embed] })
-        } catch (e) {
-            const embed = new discord.EmbedBuilder()
-                .setDescription(`${e}`)
-                .setColor(config.color)
-            message.channel.send({ embeds: [embed] })
+        cpuStat.usagePercent((err, percent, _) => {
+            if (err) return console.log(err);
+        
+            let u = convertMS(client.uptime);
+            let us = convertMS(os.uptime() * 1000);
+            let uptime = u.d + "d " + u.h + "h " + u.m + "m " + u.s + "s ";
+            let ouptime = us.d + "d " + u.h + "h " + u.m + "m " + u.s + "s ";
+            const b = client.readyAt;
+            let start = message.createdTimestamp;
+            let latency = Date.now() - start;
+        
+            const embed = new Discord.MessageEmbed()
+              .setAuthor({
+                name: `${client.user.tag} Information`,
+                iconURL: client.user.avatarURL(),
+              })
+              .setColor("#2f3136")
+              .addField(
+                ":earth_asia: Count:",
+                `\`\`\`asciidoc\n` +
+                  `• Server :: ${client.guilds.cache.size}\n` +
+                  `• Channels :: ${client.channels.cache.size.toLocaleString()}\n` +
+                  `• Users :: ${client.users.cache.size.toLocaleString()}\n` +
+                  `• Total Commands Used :: ${data.totalUsedCommands.toLocaleString()}\n` +
+                  `\`\`\``
+              )
+              .addField(
+                "<:nodejs:570073411695673345> System:",
+                `\`\`\`asciidoc\n` +
+                  `• Langs :: Node.js ${process.version}\n` +
+                  `• Libs :: Discord.js v${Discord.version}\n` +
+                  `\`\`\``
+              )
+              .addField(
+                ":floppy_disk: Usage:",
+                `\`\`\`asciidoc\n` +
+                  `• CPU :: ${percent.toFixed(2)}%\n` +
+                  `• Memory :: ${(process.memoryUsage().heapUsed / 1024 / 1024)
+                    .toFixed(2)
+                    .toLocaleString()} / ${(os.totalmem() / 1024 / 1024).toFixed(
+                    2
+                  )} MB\n` +
+                  `• Bot ready at :: ${momentTz
+                    .tz(client.readyAt, "Asia/Jakarta")
+                    .format(
+                      "ddd MMM Do YYYY HH:mm:ss"
+                    )} GMT+0700\n (Western Indonesia Time)\n` +
+                  `• Bot Uptime :: Booted up ${uptime}\n` +
+                  `• OS Uptime :: Booted up ${ouptime}\n` +
+                  `\`\`\``
+              )
+              .addField(
+                "<:CPU:569348415264129057> CPU:",
+                `\`\`\`md\n` +
+                  `${os.cpus().length}x ${os.cpus().map((i) => `${i.model}`)[0]}\n` +
+                  `\`\`\``
+              )
+              .addField(
+                ":bar_chart: Other:",
+                `\`\`\`asciidoc\n` +
+                  `• Arch :: ${os.arch()}\n` +
+                  `• Platform :: ${os.platform()}\n` +
+                  `• Latency :: ${latency.toLocaleString()} ms\n` +
+                  `• Websockets ping :: ${client.ws.ping.toLocaleString()} ms\n` +
+                  `\`\`\``
+              )
+              .setTimestamp()
+              .setFooter({
+                text: `Replying to ${message.author.tag}`,
+                iconURL: message.author.avatarURL(),
+              });
+        
+            return message.channel.send({ embeds: [embed] });
+          });
         }
-    }
-};
+    }        
 
-function formatBytes(bytes) {
-    if (bytes === 0) return "0 Bytes";
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`;
-};
+    function parseDur(ms) {
+        let seconds = ms / 1000;
+        let days = parseInt(seconds / 86400);
+        seconds = seconds % 86400;
+        let hours = parseInt(seconds / 3600);
+        seconds = seconds % 3600;
+        let minutes = parseInt(seconds / 60);
+        seconds = parseInt(seconds % 60);
+        let fin = [];
+        if (days) fin.push(`${days}d`);
+        if (hours) fin.push(`${hours}h`);
+        if (minutes) fin.push(`${minutes}m`);
+        fin.push(`${seconds}s`);
+        return fin.join(" ");
+      }
+      
+      function convertMS(ms) {
+        var d, h, m, s;
+        s = Math.floor(ms / 1000);
+        m = Math.floor(s / 60);
+        s = s % 60;
+        h = Math.floor(m / 60);
+        m = m % 60;
+        d = Math.floor(h / 24);
+        h = h % 24;
+        return {
+          d: d,
+          h: h,
+          m: m,
+          s: s,
+        };
+      }
