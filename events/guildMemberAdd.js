@@ -44,7 +44,7 @@ module.exports = async (client, member) => {
       )
       .setFooter({ text: `You are now in ${member.guild.memberCount} Members.` });
   
-    const row = new Discord.ActionRowBuilder().addComponent(
+    const row = new Discord.ActionRowBuilder().addComponents(
       new Discord.ButtonBuilder()
         .setLabel("Read our rules")
         .setStyle(Discord.ButtonStyle.Link)
