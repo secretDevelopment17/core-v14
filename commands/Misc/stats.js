@@ -38,7 +38,6 @@ module.exports = {
                   `• Server :: ${client.guilds.cache.size}\n` +
                   `• Channels :: ${client.channels.cache.size.toLocaleString()}\n` +
                   `• Users :: ${client.users.cache.size.toLocaleString()}\n` +
-                  `• Total Commands Used :: ${data.totalUsedCommands.toLocaleString()}\n` +
                   `\`\`\``
               )
               .addField(
