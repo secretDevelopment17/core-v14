@@ -28,11 +28,11 @@ client.logger = require('./Utils/logger');
     require(`./handlers/${handler}`)(client);
 });
 
-client.on('error', error => client.logger.log(error, "error"));
+client.on('error', error => client.logger.log(error.stack, "error"));
 client.on('warn', info => client.logger.log(info, "warn"));
-process.on('unhandledRejection', error => client.logger.log("UNHANDLED_REJECTION\n" + error, "error"));
+process.on('unhandledRejection', error => client.logger.log("UNHANDLED_REJECTION\n" + error.stack, "error"));
 process.on('uncaughtException', error => {
-    client.logger.log("UNCAUGHT_EXCEPTION\n" + error, "error");
+    client.logger.log("UNCAUGHT_EXCEPTION\n" + error.stack, "error");
     client.logger.log("Uncaught Exception is detected, restarting...", "info");
     process.exit(1);
 });
