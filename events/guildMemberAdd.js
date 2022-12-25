@@ -42,7 +42,7 @@ module.exports = async (client, member) => {
                   you are advised to read the **Rules and Information** in the <#954175101371301960> channels.
               `
       )
-      .setFooter({ name: `You are now in ${member.guild.memberCount} Members.` });
+      .setFooter({ text: `You are now in ${member.guild.memberCount} Members.` });
   
     const row = new Discord.ActionRowBuilder().addComponent(
       new Discord.ButtonBuilder()
