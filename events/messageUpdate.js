@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
 
-module.exports = async (old, message) => {
+module.exports = async (old, message, client) => {
     if (!message.guild || old.content === message.content || message.author.bot)
     return;
 

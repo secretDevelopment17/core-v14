@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
 
-module.exports = async (message) => {
+module.exports = async (client, message) => {
     if (!message.guild || message.author.bot) return;
     const attachments =
       message.attachments.size !== 0
