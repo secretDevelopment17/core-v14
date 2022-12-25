@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
+const welcomeHook = new Discord.WebhookClient({ id: "954181221800374282", token: "uMTA4hjNA9zItLJ95D-fveOtyLu5qnPCY8BAUenqmq_Of8ufuDAw8zhodvfCHakeg8MV"})
+
 
 module.exports = async (client, member) => {
     const ch = client.channels.cache.get("954177761868664863");
@@ -49,7 +51,7 @@ module.exports = async (client, member) => {
         .setLabel("Read our rules")
         .setStyle(Discord.ButtonStyle.Link)
         .setURL(
-          "https://discord.com/channels/954173179042091028/954175757259788328"
+          "https://discord.com/channels/954173179042091028/954175101371301960"
         )
     );
   
@@ -57,9 +59,9 @@ module.exports = async (client, member) => {
       .setColor("#00FF00")
       .setDescription(`<a:Join:593588419087695872> | ${welcomer[random]}`);
   
-    client.channels.cache.get("954176559332327494").send(logsEmbed);
+    client.channels.cache.get("954176559332327494").send({ embeds: [logsEmbed] });
     ch.setName(`Total Member : ${member.guild.memberCount}`);
-    welcomeHook.send(embed);
-    member.send({ embeds: memberEmbed, components: [row] });
+    welcomeHook.send({ embeds: [embed] });
+    member.send({ embeds: [memberEmbed], components: [row] });
     member.roles.add("954181940381098014");
 }
