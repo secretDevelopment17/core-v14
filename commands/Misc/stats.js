@@ -31,8 +31,8 @@ module.exports = {
                 name: `${client.user.tag} Information`,
                 iconURL: client.user.avatarURL(),
               })
-              .setColor("#2f3136")
-              .addField({
+              .setColor(client.config.color)
+              .addFields({
                 name: ":earth_asia: Count:",
                 value: `\`\`\`asciidoc\n` +
                   `• Server :: ${client.guilds.cache.size}\n` +
@@ -40,14 +40,14 @@ module.exports = {
                   `• Users :: ${client.users.cache.size.toLocaleString()}\n` +
                   `\`\`\``
                 })
-              .addField({
+              .addFields({
                 name: "<:nodejs:570073411695673345> System:",
                 value: `\`\`\`asciidoc\n` +
                   `• Langs :: Node.js ${process.version}\n` +
                   `• Libs :: Discord.js v${Discord.version}\n` +
                   `\`\`\``
             })
-              .addField({
+              .addFields({
                 name: ":floppy_disk: Usage:",
                 value: `\`\`\`asciidoc\n` +
                   `• CPU :: ${percent.toFixed(2)}%\n` +
@@ -65,13 +65,13 @@ module.exports = {
                   `• OS Uptime :: Booted up ${ouptime}\n` +
                   `\`\`\``
                 })
-              .addField({
+              .addFields({
                 name: "<:CPU:569348415264129057> CPU:",
                 value: `\`\`\`md\n` +
                   `${os.cpus().length}x ${os.cpus().map((i) => `${i.model}`)[0]}\n` +
                   `\`\`\``
                 })
-              .addField({
+              .addFields({
                 name: ":bar_chart: Other:",
                 value: `\`\`\`asciidoc\n` +
                   `• Arch :: ${os.arch()}\n` +
