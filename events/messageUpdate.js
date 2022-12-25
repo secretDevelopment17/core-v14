@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
 
-module.exports = async (old, message, client) => {
+module.exports = async (old, message) => {
     if (!message.guild || old.content === message.content || message.author.bot)
     return;
 
   const embed = new Discord.EmbedBuilder()
-    .setColor(client.config.color)
+    .setColor("#2f3136")
     .setAuthor({
       text: `New Message Update`,
       iconURL: `https://cdn.discordapp.com/emojis/737554516999929867.gif?size=32&quality=lossless`,
