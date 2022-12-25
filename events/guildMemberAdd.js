@@ -25,7 +25,7 @@ module.exports = async (client, member) => {
               \`\`\``
       )
       .setFooter({
-        name: `Member joined`,
+        text: `Member joined`,
         iconURL: `https://cdn.discordapp.com/emojis/574840956444999681.png?v=1`
       })
       .setTimestamp();
