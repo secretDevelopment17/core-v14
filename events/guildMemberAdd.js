@@ -47,7 +47,7 @@ module.exports = async (client, member) => {
     const row = new Discord.ActionRowBuilder().addComponent(
       new Discord.ButtonBuilder()
         .setLabel("Read our rules")
-        .setStyle("url")
+        .setStyle(Discord.ButtonStyle.Link)
         .setURL(
           "https://discord.com/channels/954173179042091028/954175757259788328"
         )
