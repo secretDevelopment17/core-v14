@@ -33,12 +33,11 @@ client.mongo = new KeyMongo({
   });
 
 mongoose.connect('mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
 }).then(() => {
-    console.log('Connected to MongoDB');
+    console.log('> ✅ • Database connected to MongoDB');
 }).catch((err) => {
-    console.error('Failed to connect to MongoDB', err);
+    console.error('> ❎ • Failed to connect to MongoDB', err);
 });
 mongoose.connection.on('error', err => {
   console.error(`Mongoose connection error: ${err}`);
