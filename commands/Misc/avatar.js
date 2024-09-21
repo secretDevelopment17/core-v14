@@ -18,7 +18,9 @@ module.exports = {
                 url: `https://media.discordapp.net/attachments/575097325945618432/956523208717238282/903868915581616189.png`
             })
             .setImage(image)
-            .setFooter(`Requested by ${message.author.tag}`)
+            .setFooter({
+                text: `Requested by ${message.author.tag}`
+            })
             .setTimestamp();
 
         message.channel.send({ embeds: [EmbedAvatar]})
