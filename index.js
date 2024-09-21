@@ -1,6 +1,7 @@
 const discord = require("discord.js");
 const config = require("./config.json");
 const { KeyMongo } = require("key-mongo");
+const mongoose = require("mongoose");
 require('./server.js');
 
 const client = new discord.Client({
@@ -30,6 +31,19 @@ client.mongo = new KeyMongo({
       "mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority",
     collectionName: "core"
   });
+
+mongoose.connect('mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((err) => {
+    console.error('Failed to connect to MongoDB', err);
+});
+mongoose.connection.on('error', err => {
+  console.error(`Mongoose connection error: ${err}`);
+});
+
 
 ["commands", "events"].forEach(handler => {
     require(`./handlers/${handler}`)(client);
