@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const Tag = require(".../database/Schema/Tag");  // Import model mongoose
+const Tag = require("../../database/Schema/Tag");  // Import model mongoose
 
 module.exports = {
     name: "tag",
