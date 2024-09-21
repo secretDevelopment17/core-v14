@@ -1,5 +1,6 @@
 const discord = require("discord.js");
 const config = require("./config.json");
+const { KeyMongo } = require("key-mongo");
 require('./server.js');
 
 const client = new discord.Client({
@@ -23,6 +24,12 @@ client.commands = new discord.Collection();
 client.aliases = new discord.Collection();
 client.config = config;
 client.logger = require('./Utils/logger');
+client.mongo = new KeyMongo({
+    dbName: "data",
+    dbUrl:
+      "mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority",
+    collectionName: "core"
+  });
 
 ["commands", "events"].forEach(handler => {
     require(`./handlers/${handler}`)(client);
