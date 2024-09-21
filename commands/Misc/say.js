@@ -7,7 +7,7 @@ module.exports = {
     category: "Misc",
     run: async (client, message, args) => {
         let word = args.join(" ")
-        if(!word) return message.channel.send(new Discord.MessageEmbed().setDescription("<a:no:954773357407113298> | Please provide a message to say.").setColor("RED"))
+        if(!word) return message.channel.send(new Discord.EmbedBuilder().setDescription("<a:no:954773357407113298> | Please provide a message to say.").setColor("RED"))
 
         message.delete()
         message.channel.send(word)    
