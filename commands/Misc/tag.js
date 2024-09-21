@@ -12,7 +12,7 @@ module.exports = {
                 .setDescription(
                   `<a:no:954773357407113298> | Not a valid command. I've \`add\`, \`show\`, \`list\``
                 )
-                .setColor("RED")
+                .setColor(Discord.Colors.Red)
             );
           } else if (args[0] == "add") {
             if (!args[1]) {
@@ -21,7 +21,7 @@ module.exports = {
                   .setDescription(
                     `<a:no:954773357407113298> | You need to specify a name to add.`
                   )
-                  .setColor("RED")
+                  .setColor(Discord.Colors.Red)
               );
             } else {
               let name = args[1]
@@ -33,7 +33,7 @@ module.exports = {
                     .setDescription(
                       `<a:no:954773357407113298> | This tag name already exists.`
                     )
-                    .setColor("RED")
+                    .setColor(Discord.Colors.Red)
                 );
               if (!response)
                 return message.channel.send(
@@ -41,7 +41,7 @@ module.exports = {
                     .setDescription(
                       `<a:no:954773357407113298> | You need to specify a response.`
                     )
-                    .setColor("RED")
+                    .setColor(Discord.Colors.Red)
                 );
         
               await client.mongo.set(`tag`, name, {
@@ -65,7 +65,7 @@ module.exports = {
                   .setDescription(
                     `<a:no:954773357407113298> | You need to specify a name to delete.`
                   )
-                  .setColor("RED")
+                  .setColor(Discord.Colors.Red)
               );
             } else {
               let name = args[1]
@@ -76,7 +76,7 @@ module.exports = {
                     .setDescription(
                       `<a:no:954773357407113298> | This tag doesn't exist.`
                     )
-                    .setColor("RED")
+                    .setColor(Discord.Colors.Red)
                 );
         
               await client.mongo.delete(`tag`, name);
@@ -95,7 +95,7 @@ module.exports = {
                   .setDescription(
                     `<a:no:954773357407113298> | You need to specify a name to show.`
                   )
-                  .setColor("RED")
+                  .setColor(Discord.Colors.Red)
               );
             } else {
               let name = args[0];
@@ -106,7 +106,7 @@ module.exports = {
                     .setDescription(
                       `<a:no:954773357407113298> | This tag doesn't exist.`
                     )
-                    .setColor("RED")
+                    .setColor(Discord.Colors.Red)
                 );
         
               message.channel.send(tag.response);
