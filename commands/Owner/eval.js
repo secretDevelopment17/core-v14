@@ -6,7 +6,7 @@ const util = require("util");
 module.exports = {
 
     name: "eval",
-    aliases: ["ev"],
+    aliases: ["ev", "e"],
     description: "evaluation you code.",
     category: "Owner",
     run: async (client, message, args) => {
