@@ -22,7 +22,7 @@ module.exports = {
                 .setColor(client.config.color)
                 .setDescription(`${word} <:mock:1289189326072184875>`)
                 .setFooter({
-                    name: `${message.author.globalName}`,
+                    text: `${message.author.globalName}`,
                     iconURL: message.author.displayAvatarURL({ dynamic: true})
                 })
                 .setTimestamp()
