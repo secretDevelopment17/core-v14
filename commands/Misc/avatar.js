@@ -18,7 +18,7 @@ module.exports = {
             })
             .setImage(image)
             .setFooter({
-                text: `Requested by ${message.author.tag}`
+                text: `Requested by ${message.author.globalName}`
             })
             .setTimestamp();
 

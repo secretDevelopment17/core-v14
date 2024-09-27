@@ -21,8 +21,7 @@ module.exports = {
                 new Discord.EmbedBuilder()
                 .setColor(client.config.color)
                 .setDescription(`${word} <:mock:1289189326072184875>`)
-                .setThumbnail("https://media.discordapp.net/attachments/954184065400070214/1289273072997629962/Untitled_design.png?ex=66f8389e&is=66f6e71e&hm=daabcdc1ae5d3f23b3783447a2ff4174651f068587f164191c2948b71c58daab&=&format=webp&quality=lossless&width=160&height=160")
-                .setAuthor({
+                .setFooter({
                     name: `${message.author.globalName}`,
                     iconURL: message.author.displayAvatarURL({ dynamic: true})
                 })
