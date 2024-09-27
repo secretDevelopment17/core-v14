@@ -16,6 +16,16 @@ module.exports = {
         });
 
         message.delete()
-        message.channel.send(word)    
+        message.channel.send({
+            embeds: [
+                new Discord.EmbedBuilder()
+                .setColor(client.config.color)
+                .setDescription(`${word} <:mock:1289189326072184875>`)
+                .setAuthor({
+                    name: `${message.author.globalName}`,
+                    iconURL: message.author.displayAvatarURL({ dynamic: true})
+                })
+            ]
+        })    
     }
 }
