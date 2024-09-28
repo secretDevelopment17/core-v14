@@ -23,7 +23,7 @@ module.exports = {
             name: `About Server - ${message.guild.name}`,
             iconURL: guildIcon
         })
-        .setDescription("```Selamat datang di Acro Network – tempat di mana imajinasi menjadi kenyataan! Bergabunglah dengan kami dan temukan dunia yang penuh petualangan, keajaiban, dan komunitas yang menyenangkan. Jangan lewatkan kesempatan untuk menjadi bagian dari pengalaman yang tak terlupakan!```")
+        .setDescription("```Selamat datang di Acro Network – tempat di mana imajinasi menjadi kenyataan! Bergabunglah dengan kami dan temukan dunia yang penuh petualangan, keajaiban, dan komunitas yang menyenangkan. Jangan lewatkan kesempatan untuk menjadi bagian dari pengalaman yang tak terlupakan!```\n")
         .addFields(
             { name: "IP Address", value: "play.acronetwork.my.id", inline: true },
             { name: "Port", value: "1025 (For Bedrock)", inline: true },
