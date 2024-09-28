@@ -7,15 +7,13 @@ module.exports = {
     category: "Owner",
     run: async (client, message, args) => {
 
-        if(!message.member.hasPermission('ADMINISTATOR') && !message.member.roles.cache.some((r) => r.name === "sudo")){
-            return message.channel.send({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setDescription("<a:no:954773357407113298> | I'm sorry but you don't have permission to do that.")
-                        .setColor(Discord.Colors.Red)
-                ]
-            });
-          }
+        if (message.author.id !== config.ownerID) return message.channel.send({
+            embeds: [
+                new Discord.EmbedBuilder()
+                    .setDescription("<a:no:954773357407113298> | I'm sorry but you don't have permission to do that.")
+                    .setColor(Discord.Colors.Red)
+            ]
+        });
 
         let guildIcon = message.guild.iconURL({ dynamic: true, size: 4096})
 
