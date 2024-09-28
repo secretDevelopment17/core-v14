@@ -20,12 +20,11 @@ module.exports = {
             embeds: [
                 new Discord.EmbedBuilder()
                 .setColor(client.config.color)
-                .setDescription(`${word} <:mock:1289189326072184875>`)
-                .setFooter({
-                    text: `${message.author.globalName}`,
+                .setAuthor({
+                    name: `${message.author.globalName}`,
                     iconURL: message.author.displayAvatarURL({ dynamic: true})
                 })
-                .setTimestamp()
+                .setDescription(`${word} <:mock:1289189326072184875>`)
             ]
         })    
     }
