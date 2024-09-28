@@ -84,7 +84,13 @@ module.exports = {
         )
 
         if (!args[0]) {
-            message.channel.send(new Discord.MessageEmbed().setDescription(`<a:no:954773357407113298> | Please select one Please select one of \`all\`, \`about\`, \`rules\`, \`roles\``).setColor("RED"))
+            message.channel.send({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setDescription("<a:no:954773357407113298> | Please select one Please select one of \`all\`, \`about\`, \`rules\`, \`roles\`, \`link\`")
+                        .setColor(Discord.Colors.Red)
+                ]
+            });
           } else if (args[0] == "all") {
             client.channels.cache.get("954175101371301960").send({ embeds: [AboutEmbed] })
             client.channels.cache.get("954175101371301960").send({ embeds: [RulesEmbedEmbed] })
