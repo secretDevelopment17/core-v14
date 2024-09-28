@@ -10,7 +10,13 @@ module.exports = {
     category: "Owner",
     run: async (client, message, args) => {
 
-        if (message.author.id !== config.ownerID) return message.channel.send('Can\'t execute this command!');
+        if (message.author.id !== config.ownerID) return message.channel.send({
+            embeds: [
+                new Discord.EmbedBuilder()
+                    .setDescription("<a:no:954773357407113298> | I'm sorry but you don't have permission to do that.")
+                    .setColor(Discord.Colors.Red)
+            ]
+        });
 
         const command = args.join(" ");
         if (!command) return message.channel.send("please give a command to run in terminal!");

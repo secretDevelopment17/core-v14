@@ -10,7 +10,7 @@ module.exports = {
         if(!word) return message.channel.send({
             embeds: [
                 new Discord.EmbedBuilder()
-                    .setDescription("<a:no:954773357407113298> | <a:no:954773357407113298> | Please provide a message to mock")
+                    .setDescription("<a:no:954773357407113298> | Please provide a message to mock")
                     .setColor(Discord.Colors.Red)
             ]
         });
