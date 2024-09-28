@@ -93,7 +93,7 @@ module.exports = {
             });
           } else if (args[0] == "all") {
             client.channels.cache.get("954175101371301960").send({ embeds: [AboutEmbed] })
-            client.channels.cache.get("954175101371301960").send({ embeds: [RulesEmbedEmbed] })
+            client.channels.cache.get("954175101371301960").send({ embeds: [RulesEmbed] })
             client.channels.cache.get("954175101371301960").send({ embeds: [RolesEmbed] })
             client.channels.cache.get("954175101371301960").send({ embeds: [LinkEmbed] })
           } else if (args[0] == "about") {
