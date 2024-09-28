@@ -24,10 +24,12 @@ module.exports = {
             iconURL: guildIcon
         })
         .setDescription("```Selamat datang di Acro Network – tempat di mana imajinasi menjadi kenyataan! Bergabunglah dengan kami dan temukan dunia yang penuh petualangan, keajaiban, dan komunitas yang menyenangkan. Jangan lewatkan kesempatan untuk menjadi bagian dari pengalaman yang tak terlupakan!```")
-        .addField("IP Address", "play.acronetwork.my.id", true)
-        .addField("Port", "1025 (For Bedrock)", true) 
-        .addField("Client", "Supported Minecraft Java & Bedrock (Crossplay)")
-        .addField("Version", "Supported 1.18.x - 1.21.x")
+        .addFields(
+            { name: "IP Address", value: "play.acronetwork.my.id", inline: true },
+            { name: "Port", value: "1025 (For Bedrock)", inline: true },
+            { name: "Client", value: "Supported Minecraft Java & Bedrock (Crossplay)" },
+            { name: "Version", value: "Supported 1.18.x - 1.21.x" }
+        )
 
         let RulesEmbed = new Discord.EmbedBuilder()
         .setColor(client.config.color)
@@ -45,8 +47,10 @@ module.exports = {
             > Use the \`/rules\` command on the server for gameplay (ingame) rules\n
                 \`\`\`Simple rules, but every staff is different, staff can take any action and whenever they want\`\`\`
             `)
-        .addField("Note:", "Keep in mind that our servers have smart AI designed to protect our servers. Our AI works without sleep (he is not human), automod works non-stop every day (unless there are some things)")
-        .addField("Invite Link:", "https://dsc.gg/acronetwork")
+            .addFields(
+                { name: "Note:", value: "Keep in mind that our servers have smart AI designed to protect our servers. Our AI works without sleep (he is not human), automod works non-stop every day (unless there are some things)" },
+                { name: "Invite Link:", value: "https://dsc.gg/acronetwork" }
+            )
 
         let RolesEmbed = new Discord.EmbedBuilder()
         .setColor(client.config.color)
@@ -55,11 +59,13 @@ module.exports = {
             iconURL: guildIcon
         })
         .setDescription(`Take the role below by clicking the reaction below. **DO NOT SPAM CLICK**. If you are caught playing click spam, you will be given a <@&956904276335144970> role`)
-        .addField("🔔 - Server Update Ping", "> You will get a notification when there is any update in the server, including Minecraft Server patch updates.")
-        .addField("💵 - Free Games Ping", "> You will get a mention if there are free games on a platform. Apart from being free, there are also discount game notifications")
-        .addField("🎮 - Game Update Ping", "> You will get a mention if there is a game update or new patch. You can request the game you want to add")
-        .addField("▶️ - Youtube Ping", "> You will get a mention if there is a video or live video from YouTube. You can request the channel you want to add")
-        .addField("🏆 - MPL ID Ping", "> You will get a mention if there is an MPL ID match schedule for that day or information if you want to watch it together")
+        .addFields(
+            { name: "🔔 - Server Update Ping", value: "> You will get a notification when there is any update in the server, including Minecraft Server patch updates." },
+            { name: "💵 - Free Games Ping", value: "> You will get a mention if there are free games on a platform. Apart from being free, there are also discount game notifications" },
+            { name: "🎮 - Game Update Ping", value: "> You will get a mention if there is a game update or new patch. You can request the game you want to add" },
+            { name: "▶️ - Youtube Ping", value: "> You will get a mention if there is a video or live video from YouTube. You can request the channel you want to add" },
+            { name: "🏆 - MPL ID Ping", value: "> You will get a mention if there is an MPL ID match schedule for that day or information if you want to watch it together" }
+        )
 
         let LinkEmbed = new Discord.EmbedBuilder()
         .setColor(client.config.color)
@@ -68,12 +74,14 @@ module.exports = {
             iconURL: guildIcon
         })
         .setDescription(`Here are links to available servers`)
-        .addField("Discord Server", "https://dsc.gg/acronetwork")
-        .addField("Website", "https://acronetwork.my.id")
-        .addField("Status Page", "https://status.acronetwork.my.id")
-        .addField("Minecraft Vote", "▪ https://minecraft-mp.com/server/335686/vote/ (primary)\n▪ https://topminecraftservers.org/vote/38697")
-        .addField("Donate", "https://sociabuzz.com/acronetwork/tribe")
-        .addField("Social Media", "YouTube | TikTok | Instagram")
+        .addFields(
+            { name: "Discord Server", value: "https://dsc.gg/acronetwork" },
+            { name: "Website", value: "https://acronetwork.my.id" },
+            { name: "Status Page", value: "https://status.acronetwork.my.id" },
+            { name: "Minecraft Vote", value: "▪ https://minecraft-mp.com/server/335686/vote/ (primary)\n▪ https://topminecraftservers.org/vote/38697" },
+            { name: "Donate", value: "https://sociabuzz.com/acronetwork/tribe" },
+            { name: "Social Media", value: "YouTube | TikTok | Instagram" }
+        )
 
         if (!args[0]) {
             message.channel.send(new Discord.MessageEmbed().setDescription(`<a:no:954773357407113298> | Please select one Please select one of \`all\`, \`about\`, \`rules\`, \`roles\``).setColor("RED"))
