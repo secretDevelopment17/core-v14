@@ -35,9 +35,9 @@ client.mongo = new KeyMongo({
 mongoose.connect('mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority', {
   serverSelectionTimeoutMS: 5000,
 }).then(() => {
-    console.log('> ✅ • Database connected to MongoDB');
+    client.logger.log(`> ✅ • Database server connected to MongoDB`, "success");
 }).catch((err) => {
-    console.error('> ❎ • Failed to connect to MongoDB', err);
+    client.logger.log(`> ❌ • Database server connected to MongoDB`, "error");
 });
 mongoose.connection.on('error', err => {
   console.error(`Mongoose connection error: ${err}`);
