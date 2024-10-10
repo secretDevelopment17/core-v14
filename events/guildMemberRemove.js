@@ -17,7 +17,7 @@ const ch = client.channels.cache.get("954177761868664863");
   const logsEmbed = new Discord.EmbedBuilder()
     .setTitle(`[\`${member.guild.memberCount}\`] Member leaved.`)
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
-    .setColor(client.config.color)
+    .setColor(Discord.Colors.Red)
     .setDescription(
       `\`\`\`asciidoc
 				• Username :: ${member.user.username} | #${member.user.discriminator}
