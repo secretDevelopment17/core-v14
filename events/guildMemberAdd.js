@@ -20,7 +20,7 @@ module.exports = async (client, member) => {
       .setColor(Discord.Colors.Green)
       .setDescription(
         `\`\`\`asciidoc
-                  • Username :: ${member.user.username} | #${member.user.discriminator}
+                  • Username :: ${member.user.globalName} | ${member.user.username}
                   • ID :: ${member.user.id}
                   • Created At :: ${new Date(member.user.createdTimestamp).toString()}    
               \`\`\``
