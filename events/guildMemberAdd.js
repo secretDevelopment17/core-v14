@@ -17,7 +17,7 @@ module.exports = async (client, member) => {
     const logsEmbed = new Discord.EmbedBuilder()
       .setTitle(`[\`${member.guild.memberCount}\`] Member joined.`)
       .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 4096 }))
-      .setColor("#00FF00")
+      .setColor(Discord.Colors.Green)
       .setDescription(
         `\`\`\`asciidoc
                   • Username :: ${member.user.username} | #${member.user.discriminator}
