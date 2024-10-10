@@ -20,7 +20,7 @@ const ch = client.channels.cache.get("954177761868664863");
     .setColor(Discord.Colors.Red)
     .setDescription(
       `\`\`\`asciidoc
-				• Username :: ${member.user.globalName} | #${member.user.username}
+				• Username :: ${member.user.globalName} | ${member.user.username}
 				• ID :: ${member.user.id}
 				• Created At :: ${new Date(member.user.createdTimestamp).toString()}    
 			\`\`\``
