@@ -20,8 +20,10 @@ module.exports = {
             const categories = readdirSync(`./commands/`)
 
             const emo = {
-                Misc: "❓ ・ ",
-                Owner: "👑 ・ ",
+                Misc: "❓  |  ",
+                Owner: "👑  |  ",
+                Fun: "🎉  |  ",
+                Staff: "🔨  |  "
             };
     
             const embed = new discord.EmbedBuilder()
