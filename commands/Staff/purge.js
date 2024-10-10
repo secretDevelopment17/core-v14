@@ -6,7 +6,7 @@ module.exports = {
     description: "Clear multiple chats with one command",
     category: "Staff",
     run: async (client, message, args) => {
-        if(!message.member.hasPermission('MANAGE_MESSAGES') && !message.member.roles.cache.some((r) => r.name === "Moderator")){
+        if(!message.member.permissions.has('MANAGE_MESSAGES') && !message.member.roles.cache.some((r) => r.name === "Moderator")) {
             return message.channel.send({
                 embeds: [
                     new Discord.EmbedBuilder()
@@ -15,6 +15,7 @@ module.exports = {
                 ]
             });
         }
+        
 
         if (!args[0]) {
             return message.channel.send({
