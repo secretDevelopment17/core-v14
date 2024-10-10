@@ -43,7 +43,11 @@ module.exports = {
                     .setDescription(`<a:yes:954773528153059350> | Successfully deleted **${deleteAmount}** chats.`)
                     .setColor(Discord.Colors.Green)
             ]
-        }).then(message => message.delete({timeout: 10000}))
+        }).then(message => {
+            setTimeout(() => {
+                message.delete().catch(console.error);
+            }, 5000);
+        })        
 
     }
 }
