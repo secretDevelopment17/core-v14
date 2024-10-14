@@ -1,4 +1,5 @@
 const Discord = require("discord.js")
+const isMute = require("../../database/Schema/isMute");
 
 module.exports = {
     name: "mute",
@@ -75,7 +76,11 @@ module.exports = {
         
         user.roles.add(muteRole)
         user.send(userEmbed)
-
+        client.channels.cache.get(client.config.modsChannel).send(embed)
+        await isMute.create({
+            userID: user.id,
+            isMuted: true
+        });
 
     }
 }
