@@ -43,12 +43,38 @@ module.exports = {
             ]
         });
 
-        let embed = new Discord.EmbedBuilder()
+        let logsEmbed = new Discord.EmbedBuilder()
         .setColor(Discord.Colors.Red)
         .setAuthor({
             name: `Muted User | Case ${client.cases}`,
             iconURL: message.guild.iconURL(),
           })
+        .setThumbnail(`${message.author.displayAvatarURL({ dynamic: true, size: 4096 })}`)
+        .addFields(
+            { name: "**Muted User**", value: `${user} | \`${user.id}\`` },
+            { name: "**Moderator**", value: `${message.author} | \`${message.author.id}\`` },
+            { name: "**Reason**", value: `\`\`\`\n${reason}\n\`\`\`` },
+            { name: "**Timestamp**", value: `**\`\`\`css\n${new Date(message.createdTimestamp).toString()}\n\`\`\`**` }
+          )
+        .setTimestamp();
+        
+        let userEmbed = new Discord.EmbedBuilder()
+        .setAuthor({ 
+            name: `${message.guild.name} Muted User | Case ${client.cases}`, 
+            iconURL: message.guild.iconURL() 
+        })
+        .setColor("#2f3136")
+        .setDescription(`You have been muted on **${message.guild.name}**`)
+        .addFields(
+            { name: "Reason", value: `\`\`\`${reason}\`\`\`` },
+            { name: "Moderator", value: `${message.author} | \`${message.author.id}\`` }
+        )
+        .setFooter({ text: "If this is a mistake, please DM our staff" })
+        .setTimestamp();
+
+        
+        user.roles.add(muteRole)
+        user.send(userEmbed)
 
 
     }
