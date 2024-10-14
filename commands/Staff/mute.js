@@ -1,5 +1,7 @@
-const Discord = require("discord.js")
+const Discord = require("discord.js");
+const config = require('../../config.json');
 const isMute = require("../../database/Schema/isMute");
+const Case = require("../../database/Schema/Case");
 
 module.exports = {
     name: "mute",
@@ -76,11 +78,26 @@ module.exports = {
         
         user.roles.add(muteRole)
         user.send(userEmbed)
-        client.channels.cache.get(client.config.modsChannel).send(embed)
-        await isMute.create({
+        client.channels.cache.get(config.modsChannel).send(embed)
+        message.channel.send({
+            embeds: [
+                new Discord.EmbedBuilder()
+                    .setDescription(`<a:yes:954773528153059350> | <@${user.id}> has been muted.`)
+                    .setColor(Discord.Colors.Green)
+            ]
+        });
+        
+        isMute.create({
             userID: user.id,
             isMuted: true
         });
+        Case.create({
+            userID: user.id,
+            globalName: user.globalName,
+            modType: "Muted",
+            moderator: message.author.id,
+            reason: reason
+        })
 
     }
 }
