@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
-
+const isMute = require("../../database/Schema/isMute");
 
 module.exports = async (client, member) => {
     const ch = client.channels.cache.get("954177761868664863");
+    const isMuted = await isMute.findOne({ userID: member.id, isMuted: true });
     const welcomer = [
       `${member.user} just landed 🚀`,
       `Glad you're here, ${member.user} 👋`,
@@ -63,4 +64,13 @@ module.exports = async (client, member) => {
     ch.setName(`Total Member : ${member.guild.memberCount}`);
     member.send({ embeds: [memberEmbed], components: [row] });
     member.roles.add("954181940381098014");
+
+    if (isMuted) {
+      member.roles.add("954378331401367572").then(() => {
+          const embed = new EmbedBuilder()
+            .setDescription(`<:Error:575148612166746112> | ${member.user} was trying to enter the server, but I've handled them (\`MUTED\`)`)
+            .setColor("RED");
+          client.channels.cache.get("954396398617501726").send({ embeds: [embed] });
+        });
+      }
 }
