@@ -3,8 +3,8 @@ const isMute = require("../../database/Schema/isMute")
 const Case = require("../../database/Schema/Case")
 
 module.exports = {
-    name: "mute",
-    aliases: [],
+    name: "silent",
+    aliases: ["mute"],
     description: "Mute a member",
     category: "Staff",
     run: async (client, message, args) => {
