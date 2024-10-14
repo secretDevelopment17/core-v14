@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const config = require('../../config.json');
 const isMute = require("../../database/Schema/isMute");
 const Case = require("../../database/Schema/Case");
 
@@ -78,7 +77,7 @@ module.exports = {
         
         user.roles.add(muteRole)
         user.send(userEmbed)
-        client.channels.cache.get(config.modsChannel).send(embed)
+        client.channels.cache.get(client.config.modsChannel).send(embed)
         message.channel.send({
             embeds: [
                 new Discord.EmbedBuilder()
