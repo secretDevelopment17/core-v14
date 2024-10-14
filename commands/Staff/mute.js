@@ -4,8 +4,8 @@ const Case = require("../../database/Schema/Case");
 
 module.exports = {
     name: "mute",
-    aliases: ["timeout"],
-    description: "Mute member",
+    aliases: [],
+    description: "Mute a member",
     category: "Staff",
     run: async (client, message, args) => {
         if(!message.member.permissions.has('MUTE_MEMBERS') && !message.member.roles.cache.some((r) => r.name === "Moderator")) {
