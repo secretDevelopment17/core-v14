@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
-const isMute = require("../../database/Schema/isMute");
-const Case = require("../../database/Schema/Case");
+const Discord = require("discord.js")
+const isMute = require("../../database/Schema/isMute")
+const Case = require("../../database/Schema/Case")
 
 module.exports = {
     name: "mute",
@@ -97,6 +97,5 @@ module.exports = {
             moderator: message.author.id,
             reason: reason
         })
-
     }
 }
