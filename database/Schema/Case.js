@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const caseSchema = new mongoose.Schema({
+    caseID: {
+        type: String,
+        required: true
+    },
     userID: {
         type: Number,
         required: true
