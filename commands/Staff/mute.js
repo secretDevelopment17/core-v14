@@ -91,6 +91,7 @@ module.exports = {
             isMuted: true
         });
         Case.create({
+            caseID: client.cases,
             userID: user.id,
             globalName: user.user.globalName,
             modType: "Muted",
