@@ -76,8 +76,8 @@ module.exports = {
 
         
         user.roles.add(muteRole)
-        user.send(userEmbed)
-        client.channels.cache.get(client.logsChannel).send(logsEmbed)
+        user.send({ embeds: [userEmbed] })
+        client.channels.cache.get(client.logsChannel).send({ embeds: [logsEmbed] })
         message.channel.send({
             embeds: [
                 new Discord.EmbedBuilder()
