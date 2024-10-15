@@ -92,7 +92,7 @@ module.exports = {
         });
         Case.create({
             userID: user.id,
-            globalName: user.globalName,
+            globalName: user.user.globalName,
             modType: "Muted",
             moderator: message.author.id,
             reason: reason
