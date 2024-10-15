@@ -8,7 +8,7 @@ module.exports = {
     description: "Mute a member",
     category: "Staff",
     run: async (client, message, args) => {
-        if(!message.member.permissions.has('MUTE_MEMBERS') && !message.member.roles.cache.some((r) => r.name === "Moderator")) {
+        if(!message.member.permissions.has(Discord.PermissionsBitField.Flags.MuteMembers) && !message.member.roles.cache.some((r) => r.name === "Moderator")) {
             return message.channel.send({
                 embeds: [
                     new Discord.EmbedBuilder()
