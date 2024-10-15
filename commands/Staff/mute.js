@@ -3,8 +3,8 @@ const isMute = require("../../database/Schema/isMute")
 const Case = require("../../database/Schema/Case")
 
 module.exports = {
-    name: "silent",
-    aliases: ["mute"],
+    name: "mute",
+    aliases: [],
     description: "Mute a member",
     category: "Staff",
     run: async (client, message, args) => {
@@ -77,7 +77,7 @@ module.exports = {
         
         user.roles.add(muteRole)
         user.send(userEmbed)
-        client.channels.cache.get(client.config.modsChannel).send(embed)
+        client.channels.cache.get(client.logsChannel).send(embed)
         message.channel.send({
             embeds: [
                 new Discord.EmbedBuilder()

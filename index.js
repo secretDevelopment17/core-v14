@@ -31,7 +31,8 @@ client.mongo = new KeyMongo({
       "mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority",
     collectionName: "core"
   });
-client.cases = Math.random(1000).toString(36).substr(2, 8);  
+client.cases = Math.random(1000).toString(36).substr(2, 8);
+client.logsChannel = "954396398617501726"; 
 
 
 mongoose.connect('mongodb+srv://athx:athx123@coredata.xyliwmo.mongodb.net/?retryWrites=true&w=majority', {
