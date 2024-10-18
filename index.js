@@ -102,7 +102,7 @@ client.on("messageCreate", async (message) => {
         await message.delete();
 
         // Mengirimkan embed peringatan ke channel
-        const alertEmbed = new EmbedBuilder()
+        const alertEmbed = new discord.EmbedBuilder()
             .setColor('#FF0000')
             .setTitle('⚠ Malicious Link Detected ⚠')
             .setDescription('A message containing a banned URL was detected and deleted.')
