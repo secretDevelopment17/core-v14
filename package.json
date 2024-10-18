@@ -21,6 +21,7 @@
         "express-session": "^1.18.0",
         "fs": "^0.0.2",
         "key-mongo": "^1.1.4",
+        "line-reader": "^0.4.0",
         "moment": "^2.30.1",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.45",
