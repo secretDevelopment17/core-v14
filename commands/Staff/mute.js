@@ -95,7 +95,7 @@ module.exports = {
             userID: user.id,
             globalName: user.user.globalName,
             modType: "Mute",
-            moderator: message.author.id,
+            moderator: message.author.globalName,
             reason: reason
         })
     }
