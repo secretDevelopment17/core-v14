@@ -77,7 +77,7 @@ function isValidURL(string) {
 if (isValidURL(message.content.toLowerCase()) === true) {
     const a = message.id;
 
-    lineReader.eachLine('dangurls.txt', (line, last) => {
+    lineReader.eachLine('antilink.txt', (line, last) => {
         if (
             message.content.toLowerCase().startsWith('https://www.' + line) ||
             message.content.toLowerCase().startsWith('http://www.' + line) ||
