@@ -176,7 +176,7 @@ client.on('messageCreate', async (message) => {
             await Case.create({
               caseID: client.cases,
               userID: member.id,
-              globalName: member.user.globalName,
+              globalName: member.globalName,
               modType: "Auto-Mute",
               moderator: author.id,
               reason: reason
