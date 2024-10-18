@@ -156,17 +156,24 @@ client.on('messageCreate', async (message) => {
             .setTimestamp();
 
 
-            message.member.roles.add('954378331401367572');
-            message.channel.send({ content: `<@${message.author.id}>`, embeds: [linkEmbed] });
-            client.channels.cache.get(client.logsChannel).send({ embeds: [logsLinkEmbed] });
-            client.channels.cache.get("954176625887571998").send({ embeds: [alertEmbed] })
-            client.users.cache.get(member.id).send({ embeds: [userEmbed] });
+            await message.member.roles.add('954378331401367572');
+            await message.channel.send({ content: `<@${message.author.id}>`, embeds: [linkEmbed] });
 
-            isMute.create({
+            const logChannel = client.channels.cache.get(client.logsChannel);
+            if (logChannel) {
+              await logChannel.send({ embeds: [logsEmbed] });
+            }
+            const alertChannel = client.channels.cache.get("954176625887571998");
+            if (alertChannel) {
+              await alertChannel.send({ embeds: [alertEmbed] });
+            }
+            await client.users.cache.get(member.id).send({ embeds: [userEmbed] });
+
+            await isMute.create({
               userID: member.id,
               isMuted: true
             });
-            Case.create({
+            await Case.create({
               caseID: client.cases,
               userID: member.id,
               globalName: member.user.globalName,
@@ -178,7 +185,7 @@ client.on('messageCreate', async (message) => {
             console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
             client.logger.log(`I prevent malicious links from ${message.author.tag}`, "success")
         } catch (err) {
-            client.logger.log("Failed to prevent malicious link:\n" + err, "error");
+            client.logger.log("Failed to prevent malicious link:\n" + err.stack, "error");
         }
     }
 })
