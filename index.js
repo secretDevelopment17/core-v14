@@ -20,7 +20,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
       return;
   }
   bannedUrls = data.split(/\r?\n/).filter(url => url.trim() !== '');
-  console.log('Banned URLs:', bannedUrls);
+  console.log('Banned URLs loaded:', bannedUrls);
 });
 
 const client = new discord.Client({
@@ -79,39 +79,42 @@ process.on('uncaughtException', error => {
     process.exit(1);
 });
 
+function containsBannedUrl(messageContent) {
+  const normalizedMessage = messageContent.toLowerCase(); // Normalisasi ke huruf kecil
+
+  return bannedUrls.some(bannedUrl => {
+      const normalizedBannedUrl = bannedUrl.toLowerCase();
+      return (
+          normalizedMessage.includes(`https://${normalizedBannedUrl}`) ||
+          normalizedMessage.includes(`http://${normalizedBannedUrl}`) ||
+          normalizedMessage.includes(`www.${normalizedBannedUrl}`) ||
+          normalizedMessage.includes(normalizedBannedUrl)
+      );
+  });
+}
+
 client.on("message", async (message) => {
 
-  const messageContent = message.content.toLowerCase();
+  if (containsBannedUrl(message.content)) {
+    try {
+        // Menghapus pesan jika mengandung URL yang terlarang
+        await message.delete();
 
-    // Mengecek apakah pesan mengandung URL yang terdaftar di dangurls.txt
-    const containsBannedUrl = bannedUrls.some(url => 
-        messageContent.startsWith(`https://www.${url}`) ||
-        messageContent.startsWith(`http://www.${url}`) ||
-        messageContent.startsWith(url) ||
-        messageContent.startsWith(`https://${url}`) ||
-        messageContent.startsWith(`http://${url}`)
-    );
+        // Mengirimkan embed peringatan ke channel
+        const alertEmbed = new EmbedBuilder()
+            .setColor('#FF0000')
+            .setTitle('⚠ Malicious Link Detected ⚠')
+            .setDescription('A message containing a banned URL was detected and deleted.')
+            .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' })
+            .setTimestamp();
 
-    if (containsBannedUrl) {
-        try {
-            // Menghapus pesan jika mengandung URL yang dilarang
-            await message.delete();
+        await message.channel.send({ embeds: [alertEmbed] });
 
-            // Mengirimkan embed peringatan ke channel
-            const alertEmbed = new discord.EmbedBuilder()
-                .setColor('#FF0000')
-                .setTitle('⚠ Malicious Link Detected ⚠')
-                .setDescription('A message containing a banned URL was deleted.')
-                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' })
-                .setTimestamp();
-
-            await message.channel.send({ embeds: [alertEmbed] });
-
-            console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
-        } catch (err) {
-            console.error('Failed to delete message:', err);
-        }
+        console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
+    } catch (err) {
+        console.error('Failed to delete message:', err);
     }
+}
 
 })
 
