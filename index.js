@@ -5,9 +5,23 @@ const mongoose = require("mongoose");
 
 const lineReader = require('line-reader');
 const nvt = require('node-virustotal');
+const fs = require('fs');
+const path = require('path');
 const isMute = require("./database/Schema/isMute")
 const Case = require("./database/Schema/Case")
 require('./server.js');
+
+const filePath = path.join(__dirname, 'antilink.txt');
+let bannedUrls = [];
+
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) {
+      console.error('Error reading dangurls.txt:', err);
+      return;
+  }
+  bannedUrls = data.split(/\r?\n/).filter(url => url.trim() !== '');
+  console.log('Banned URLs:', bannedUrls);
+});
 
 const client = new discord.Client({
     closeTimeout: 3_000 ,
@@ -67,178 +81,37 @@ process.on('uncaughtException', error => {
 
 client.on("message", async (message) => {
 
-  let j = 0;
+  const messageContent = message.content.toLowerCase();
 
-function isValidURL(string) {
-    const res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-    return res !== null;
-}
+    // Mengecek apakah pesan mengandung URL yang terdaftar di dangurls.txt
+    const containsBannedUrl = bannedUrls.some(url => 
+        messageContent.startsWith(`https://www.${url}`) ||
+        messageContent.startsWith(`http://www.${url}`) ||
+        messageContent.startsWith(url) ||
+        messageContent.startsWith(`https://${url}`) ||
+        messageContent.startsWith(`http://${url}`)
+    );
 
-if (isValidURL(message.content.toLowerCase()) === true) {
-    const a = message.id;
+    if (containsBannedUrl) {
+        try {
+            // Menghapus pesan jika mengandung URL yang dilarang
+            await message.delete();
 
-    lineReader.eachLine('antilink.txt', (line, last) => {
-        if (
-            message.content.toLowerCase().startsWith('https://www.' + line) ||
-            message.content.toLowerCase().startsWith('http://www.' + line) ||
-            message.content.toLowerCase().startsWith(line) ||
-            message.content.toLowerCase().startsWith('http://' + line) ||
-            message.content.toLowerCase().startsWith('https://' + line)
-        ) {
-            message.channel.messages.fetch(a).then((msg) => msg.delete());
-
-            const linksEmbed = new discord.EmbedBuilder()
-                .setColor('#E7A700')
-                .setTitle('⚠ Malicious link detected ⚠')
-                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' });
-
-            const author = client.user.tag;
-            const reason = 'Posted malicious link detected';
-            const member = message.author;
-
-            const logsLinkEmbed = new discord.EmbedBuilder()
-                .setColor(discord.Colors.Red)
-                .setAuthor({ name: `Auto-Muted | Case ${client.cases}`, iconURL: 'https://cdn.discordapp.com/emojis/742191092652310578.png?v=1' })
-                .setThumbnail(message.author.displayAvatarURL({ dynamic: true, size: 4096 }))
-                .addFields(
-                    { name: 'Muted User', value: `${member} | \`${member.id}\`` },
-                    { name: 'Moderator', value: `${author}` },
-                    { name: 'Reason', value: `\`\`\`\n${reason}\n\`\`\`` },
-                    { name: 'Timestamp', value: `**\`\`\`css\n${new Date(message.createdTimestamp).toString()}\n\`\`\`**` }
-                )
-                .setTimestamp();
-
-            const userEmbed = new discord.EmbedBuilder()
-                .setAuthor({ name: `${message.guild.name} Auto-Muted | Case ${client.cases}`, iconURL: message.guild.iconURL() })
-                .setColor('#2f3136')
-                .setDescription(`You have been auto-muted on **${message.guild.name}**`)
-                .addFields(
-                    { name: 'Reason', value: `\`\`\`${reason}\`\`\`` },
-                    { name: 'Moderator', value: `${author}` }
-                )
-                .setFooter({ text: 'If this is a mistake, please DM our staff.' })
-                .setTimestamp();
-
+            // Mengirimkan embed peringatan ke channel
             const alertEmbed = new discord.EmbedBuilder()
-                .setColor('#2f3136')
-                .setAuthor({ name: 'Malicious link detected', iconURL: 'https://cdn.discordapp.com/emojis/590433107111313410.gif' })
-                .setDescription(`> Message ID: \`${message.id}\`\n> Channel: ${message.channel}\n> Author: ${member} | \`${member.id}\``)
-                .addFields({ name: 'Content:', value: `|| ${message.content} ||` })
-                .setFooter({ text: 'Don\'t try to open it.' })
+                .setColor('#FF0000')
+                .setTitle('⚠ Malicious Link Detected ⚠')
+                .setDescription('A message containing a banned URL was deleted.')
+                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' })
                 .setTimestamp();
 
-            const channel = message.guild.channels.cache.find((ch) => ch.name === '🚫┇automod');
-            if (channel) channel.send({ embeds: [alertEmbed] });
+            await message.channel.send({ embeds: [alertEmbed] });
 
-            message.member.roles.add('954378331401367572');
-            client.users.cache.get(member.id).send({ embeds: [userEmbed] });
-            bot.channels.cache.get(client.logsChannel).send({ embeds: [logsLinkEmbed] });
-
-            isMute.create({
-              userID: member.id,
-              isMuted: true
-            });
-            Case.create({
-              caseID: client.cases,
-              userID: member.id,
-              globalName: member.user.globalName,
-              modType: "Auto-Mute",
-              moderator: author.id,
-              reason: reason
-            });
-
-
-            message.channel.send(`${message.author}`).then(() => {
-                message.channel.send({ embeds: [linksEmbed] });
-            }).catch(() => {
-                message.reply('An error occurred.');
-            });
-
-            j++;
-            return false;
+            console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
+        } catch (err) {
+            console.error('Failed to delete message:', err);
         }
-    });
-}
-
-if (j > 0) {
-    const defaultTimedInstance = nvt.makeAPI();
-    defaultTimedInstance.domainLookup(message.content.toLowerCase(), (err, res) => {
-        if (err) {
-            console.log('Virustotal API did not work because:');
-            console.log(err);
-            return;
-        }
-        const road = JSON.parse(res);
-        if (road.data.attributes.last_analysis_results.Kaspersky.result !== 'clean') {
-            const linksEmbed = new discord.EmbedBuilder()
-                .setColor('#E7A700')
-                .setTitle(`⚠ This link is ${road.data.attributes.last_analysis_results.Kaspersky.result.toUpperCase()} ⚠`)
-                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' });
-
-            const author = client.user.tag;
-            const reason = 'Posted malicious link detected';
-            const member = message.author;
-
-            const logsLinkEmbed = new discord.EmbedBuilder()
-                .setColor(discord.Colors.Red)
-                .setAuthor({ name: `Auto-Muted | Case ${client.cases}`, iconURL: 'https://cdn.discordapp.com/emojis/742191092652310578.png?v=1' })
-                .setThumbnail(message.author.displayAvatarURL({ dynamic: true, size: 4096 }))
-                .addFields(
-                    { name: 'Muted User', value: `${member} | \`${member.id}\`` },
-                    { name: 'Moderator', value: `${author}` },
-                    { name: 'Reason', value: `\`\`\`\n${reason}\n\`\`\`` },
-                    { name: 'Timestamp', value: `**\`\`\`css\n${new Date(message.createdTimestamp).toString()}\n\`\`\`**` }
-                )
-                .setTimestamp();
-
-            const userEmbed = new discord.EmbedBuilder()
-                .setAuthor({ name: `${message.guild.name} Auto-Muted | Case ${client.cases}`, iconURL: message.guild.iconURL() })
-                .setColor('#2f3136')
-                .setDescription(`You have been auto-muted on **${message.guild.name}**`)
-                .addFields(
-                    { name: 'Reason', value: `\`\`\`${reason}\`\`\`` },
-                    { name: 'Moderator', value: `${author}` }
-                )
-                .setFooter({ text: 'If this is a mistake, please DM our staff.' })
-                .setTimestamp();
-
-            const alertEmbed = new discord.EmbedBuilder()
-                .setColor('#2f3136')
-                .setAuthor({ name: 'Malicious link detected', iconURL: 'https://cdn.discordapp.com/emojis/590433107111313410.gif' })
-                .setDescription(`> Message ID: \`${message.id}\`\n> Channel: ${message.channel}\n> Author: ${member} | \`${member.id}\``)
-                .addFields({ name: 'Content:', value: `|| ${message.content} ||` })
-                .setFooter({ text: 'Don\'t try to open it.' })
-                .setTimestamp();
-
-            const channel = message.guild.channels.cache.find((ch) => ch.name === '🚫┇automod');
-            if (channel) channel.send({ embeds: [alertEmbed] });
-
-            message.member.roles.add('954378331401367572');
-            client.users.cache.get(member.id).send({ embeds: [userEmbed] });
-            bot.channels.cache.get(client.logsChannel).send({ embeds: [logsLinkEmbed] });
-
-            isMute.create({
-              userID: member.id,
-              isMuted: true
-          });
-            Case.create({
-              caseID: client.cases,
-              userID: member.id,
-              globalName: member.user.globalName,
-              modType: "Auto-Mute",
-              moderator: author.id,
-              reason: reason
-            });
-
-
-            message.channel.send(`${message.author}`).then(() => {
-                message.channel.send({ embeds: [linksEmbed] });
-            }).catch(() => {
-                message.reply('An error occurred.');
-            });
-        }
-    });
-}
+    }
 
 })
 
