@@ -182,10 +182,9 @@ client.on('messageCreate', async (message) => {
               reason: reason
             });
 
-            console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
-            client.logger.log(`I prevent malicious links from ${message.author.tag}`, "success")
+            client.logger.log(`> ℹ️ • I prevent malicious links from ${message.author.tag}`, "success")
         } catch (err) {
-            client.logger.log("Failed to prevent malicious link:\n" + err.stack, "error");
+            client.logger.log("> ❌ • Failed to prevent malicious link:\n" + err.stack, "error");
         }
     }
 })
