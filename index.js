@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 
 const lineReader = require('line-reader');
 const nvt = require('node-virustotal');
-const isMute = require("database/Schema/isMute")
-const Case = require("database/Schema/Case")
+const isMute = require("./database/Schema/isMute")
+const Case = require("./database/Schema/Case")
 require('./server.js');
 
 const client = new discord.Client({
