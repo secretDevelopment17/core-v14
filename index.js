@@ -6,6 +6,9 @@ require('./server.js');
 
 // ===== ANTI-BADLINK FEATURE ===== //
 
+const isMute = require("./database/Schema/isMute")
+const Case = require("./database/Schema/Case")
+
 const path = require('path');
 const fs = require('fs');
 
@@ -101,18 +104,81 @@ client.on('messageCreate', async (message) => {
         try {
             await message.delete();
 
-            const alertEmbed = new discord.EmbedBuilder()
+            const linkEmbed = new discord.EmbedBuilder()
                 .setColor('#FF0000')
-                .setTitle('⚠ Malicious Link Detected ⚠')
-                .setDescription('A message containing a banned URL was detected and deleted.')
-                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' })
-                .setTimestamp();
+                .setAuthor({
+                  name: `Suspicious link detected`,
+                  iconURL: `https://cdn.discordapp.com/emojis/590433107111313410.gif`,
+                })
+                .setDescription("The link sent may be a malicious link. I will try to prevent, don't try to open it")
+            
 
-            await message.channel.send({ embeds: [alertEmbed] });
+            const author = client.user.tag;
+            const reason = '[AUTO] Post suspicious links';
+            const member = message.author;
+
+            const logsEmbed = new discord.EmbedBuilder()
+            .setColor(discord.Colors.Red)
+            .setAuthor({ name: `Auto-Muted | Case ${client.cases}`, iconURL: 'https://cdn.discordapp.com/emojis/742191092652310578.png?v=1' })
+            .setThumbnail(message.author.displayAvatarURL({ dynamic: true, size: 4096 }))
+            .addFields(
+                    { name: 'Muted User', value: `${member} | \`${member.id}\`` },
+                    { name: 'Moderator', value: `${author}` },
+                    { name: 'Reason', value: `\`\`\`\n${reason}\n\`\`\`` },
+                    { name: 'Timestamp', value: `**\`\`\`css\n${new Date(message.createdTimestamp).toString()}\n\`\`\`**` }
+            )
+            .setTimestamp();
+
+            const userEmbed = new discord.EmbedBuilder()
+            .setAuthor({ name: `${message.guild.name} Auto-Muted | Case ${client.cases}`, iconURL: message.guild.iconURL() })
+            .setColor('#2f3136')
+            .setDescription(`You have been auto-muted on **${message.guild.name}**`)
+            .addFields(
+                { name: 'Reason', value: `\`\`\`${reason}\`\`\`` },
+                { name: 'Moderator', value: `${author}` }
+            )
+            .setFooter({ text: 'If this is a mistake, please DM our staff.' })
+            .setTimestamp();
+
+            const alertEmbed = new discord.EmbedBuilder()
+            .setColor("#2f3136")
+            .setAuthor({
+              name: `Suspicious link deleted`,
+              iconURL: `https://cdn.discordapp.com/emojis/590433485202915328.gif`,
+            })
+            .setDescription([			  		
+              `> Message ID: \`${message.id}\``,
+              `> Channel: ${message.channel}`,
+              `> Author: ${member} | \`${member.id}\``,			
+            ])
+            .addField({ name: '> Content:', value: `|| ${message.content} ||`})
+            .setFooter(`Don't try to open it`)
+            .setTimestamp();
+
+
+            message.member.roles.add('954378331401367572');
+            message.channel.send({ content: `<@${message.author.id}>`, embeds: [linkEmbed] });
+            client.channels.cache.get(client.logsChannel).send({ embeds: [logsLinkEmbed] });
+            client.channels.cache.get("954176625887571998").send({ embeds: [alertEmbed] })
+            client.users.cache.get(member.id).send({ embeds: [userEmbed] });
+
+            isMute.create({
+              userID: member.id,
+              isMuted: true
+            });
+            Case.create({
+              caseID: client.cases,
+              userID: member.id,
+              globalName: member.user.globalName,
+              modType: "Auto-Mute",
+              moderator: author.id,
+              reason: reason
+            });
 
             console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
+            client.logger.log(`I prevent malicious links from ${message.author.tag}`, "success")
         } catch (err) {
-            console.error('Failed to delete message:', err);
+            client.logger.log("Failed to prevent malicious link:\n" + err, "error");
         }
     }
 })
