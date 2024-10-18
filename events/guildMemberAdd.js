@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const config = require("../config.json");
-const isMute = require("./../database/Schema/isMute");
 
 module.exports = async (client, member) => {
     const ch = client.channels.cache.get("954177761868664863");
