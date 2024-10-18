@@ -64,11 +64,16 @@ module.exports = async (client, member) => {
     member.send({ embeds: [memberEmbed], components: [row] });
     member.roles.add("954181940381098014");
 
+    if (member.user.bot) {
+      member.roles.add("956906982105837600");
+      member.roles.remove("954181940381098014")
+    }
+
     if (isMuted) {
       member.roles.add("954378331401367572").then(() => {
-          const embed = new EmbedBuilder()
+          const embed = new Discord.EmbedBuilder()
             .setDescription(`<:Error:575148612166746112> | ${member.user} was trying to enter the server, but I've handled them (\`MUTED\`)`)
-            .setColor("RED");
+            .setColor(Discord.Colors.Red);
           client.channels.cache.get("954396398617501726").send({ embeds: [embed] });
         });
       }
