@@ -2,8 +2,8 @@ const discord = require("discord.js");
 const config = require("../config.json");
 const lineReader = require("line-reader");
 const nvt = require('node-virustotal');
-const isMute = require("../../database/Schema/isMute")
-const Case = require("../../database/Schema/Case")
+const isMute = require("./../database/Schema/isMute")
+const Case = require("./../database/Schema/Case")
 
 module.exports = async (client, message) => {
     
