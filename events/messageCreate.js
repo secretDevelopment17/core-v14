@@ -2,8 +2,10 @@ const discord = require("discord.js");
 const config = require("../config.json");
 const lineReader = require("line-reader");
 const nvt = require('node-virustotal');
-const isMute = require("./../database/Schema/isMute")
-const Case = require("./../database/Schema/Case")
+const isMute = require("./../database/Schema/isMute");
+const Case = require("./../database/Schema/Case");
+const path = require('path');
+const filePath = path.resolve(__dirname, '../../dangurls.txt');
 
 module.exports = async (client, message) => {
     
@@ -36,7 +38,7 @@ function isValidURL(string) {
 if (isValidURL(message.content.toLowerCase()) === true) {
     const a = message.id;
 
-    lineReader.eachLine('../dangurls.txt', (line, last) => {
+    lineReader.eachLine(filePath, (line, last) => {
         if (
             message.content.toLowerCase().startsWith('https://www.' + line) ||
             message.content.toLowerCase().startsWith('http://www.' + line) ||
@@ -128,7 +130,7 @@ if (j > 0) {
         }
         const road = JSON.parse(res);
         if (road.data.attributes.last_analysis_results.Kaspersky.result !== 'clean') {
-            const linksEmbed = new EmbedBuilder()
+            const linksEmbed = new Discord.EmbedBuilder()
                 .setColor('#E7A700')
                 .setTitle(`⚠ This link is ${road.data.attributes.last_analysis_results.Kaspersky.result.toUpperCase()} ⚠`)
                 .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' });
@@ -137,7 +139,7 @@ if (j > 0) {
             const reason = 'Posted malicious link detected';
             const member = message.author;
 
-            const logsLinkEmbed = new EmbedBuilder()
+            const logsLinkEmbed = new Discord.EmbedBuilder()
                 .setColor('RED')
                 .setAuthor({ name: `Auto-Muted | Case ${client.cases}`, iconURL: 'https://cdn.discordapp.com/emojis/742191092652310578.png?v=1' })
                 .setThumbnail(message.author.displayAvatarURL({ dynamic: true, size: 4096 }))
@@ -149,7 +151,7 @@ if (j > 0) {
                 )
                 .setTimestamp();
 
-            const userEmbed = new EmbedBuilder()
+            const userEmbed = new Discord.EmbedBuilder()
                 .setAuthor({ name: `${message.guild.name} Auto-Muted | Case ${client.cases}`, iconURL: message.guild.iconURL() })
                 .setColor('#2f3136')
                 .setDescription(`You have been auto-muted on **${message.guild.name}**`)
@@ -160,7 +162,7 @@ if (j > 0) {
                 .setFooter({ text: 'If this is a mistake, please DM our staff.' })
                 .setTimestamp();
 
-            const alertEmbed = new EmbedBuilder()
+            const alertEmbed = new Discord.EmbedBuilder()
                 .setColor('#2f3136')
                 .setAuthor({ name: 'Malicious link detected', iconURL: 'https://cdn.discordapp.com/emojis/590433107111313410.gif' })
                 .setDescription(`> Message ID: \`${message.id}\`\n> Channel: ${message.channel}\n> Author: ${member} | \`${member.id}\``)
