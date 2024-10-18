@@ -5,6 +5,7 @@ const nvt = require('node-virustotal');
 const isMute = require("./../database/Schema/isMute");
 const Case = require("./../database/Schema/Case");
 const path = require('path');
+const fs = require('fs');
 const filePath = path.resolve(__dirname, '../../dangurls.txt');
 let dangerousUrls = [];
 
