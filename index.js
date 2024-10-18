@@ -178,7 +178,7 @@ client.on('messageCreate', async (message) => {
               userID: member.id,
               globalName: member.globalName,
               modType: "Auto-Mute",
-              moderator: author.id,
+              moderator: author,
               reason: reason
             });
 
