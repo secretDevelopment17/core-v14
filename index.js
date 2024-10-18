@@ -151,7 +151,7 @@ client.on('messageCreate', async (message) => {
               `> Channel: ${message.channel}`,
               `> Author: ${member} | \`${member.id}\``,			
             ])
-            .addField({ name: '> Content:', value: `|| ${message.content} ||`})
+            .addFields({ name: '> Content:', value: `|| ${message.content} ||`})
             .setFooter(`Don't try to open it`)
             .setTimestamp();
 
