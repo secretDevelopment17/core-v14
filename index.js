@@ -82,18 +82,19 @@ process.on('uncaughtException', error => {
 function containsBannedUrl(messageContent) {
   const normalizedMessage = messageContent.toLowerCase(); // Normalisasi ke huruf kecil
 
-  return bannedUrls.some(bannedUrl => {
+  // Mengecek setiap URL yang dilarang
+  for (const bannedUrl of bannedUrls) {
       const normalizedBannedUrl = bannedUrl.toLowerCase();
-      return (
-          normalizedMessage.includes(`https://${normalizedBannedUrl}`) ||
-          normalizedMessage.includes(`http://${normalizedBannedUrl}`) ||
-          normalizedMessage.includes(`www.${normalizedBannedUrl}`) ||
-          normalizedMessage.includes(normalizedBannedUrl)
-      );
-  });
+      
+      // Memeriksa jika URL ada dalam pesan
+      if (normalizedMessage.includes(normalizedBannedUrl)) {
+          return true; // Mengembalikan true jika ditemukan
+      }
+  }
+  return false; // Mengembalikan false jika tidak ditemukan
 }
 
-client.on("message", async (message) => {
+client.on("messageCreate", async (message) => {
 
   if (containsBannedUrl(message.content)) {
     try {
