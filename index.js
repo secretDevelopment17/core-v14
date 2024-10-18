@@ -146,13 +146,13 @@ client.on('messageCreate', async (message) => {
               name: `Suspicious link deleted`,
               iconURL: `https://cdn.discordapp.com/emojis/590433485202915328.gif`,
             })
-            .setDescription([			  		
+            .setDescription([
               `> Message ID: \`${message.id}\``,
-              `> Channel: ${message.channel}`,
-              `> Author: ${member} | \`${member.id}\``,			
-            ])
-            .addFields({ name: '> Content:', value: `|| ${message.content} ||`})
-            .setFooter(`Don't try to open it`)
+              `> Channel: ${message.channel.toString()}`, // Memastikan ini string
+              `> Author: ${member.tag} | \`${member.id}\``,
+            ].join('\n'))
+            .addFields({ name: '> Content:', value: `|| ${message.content} ||` })
+            .setFooter({ text: `Don't try to open it` })
             .setTimestamp();
 
 
