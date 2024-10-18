@@ -31,7 +31,7 @@ module.exports = {
         if (!muted) return message.channel.send({
             embeds: [
                 new Discord.EmbedBuilder()
-                    .setDescription("<a:no:954773357407113298> | Sorry, but <@${user.id}> is not muted.")
+                    .setDescription(`<a:no:954773357407113298> | Sorry, but <@${user.id}> is not muted.`)
                     .setColor(Discord.Colors.Red)
             ]
         });
