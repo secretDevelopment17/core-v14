@@ -7,7 +7,7 @@ const Case = require("./../database/Schema/Case");
 const path = require('path');
 const fs = require('fs');
 
-const filePath = path.join(__dirname, 'antilink.txt');
+const filePath = path.join(__dirname, './../antilink.txt');
 let bannedUrls = [];
 
 fs.readFile(filePath, 'utf8', (err, data) => {
