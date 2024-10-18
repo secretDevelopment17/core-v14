@@ -6,17 +6,10 @@ const isMute = require("./../database/Schema/isMute");
 const Case = require("./../database/Schema/Case");
 const path = require('path');
 const fs = require('fs');
-const filePath = path.resolve(__dirname, '../../dangurls.txt');
-let dangerousUrls = [];
+const dangerousUrlsPath = path.join(__dirname, 'dangurls.txt');
+const dangerousUrls = [];
 
-fs.readFile(dangerousUrlsPath, 'utf8', (err, data) => {
-    if (err) {
-        console.error('Error reading dangerous URLs file:', err);
-        return;
-    }
-    dangerousUrls = data.split('\n').map(url => url.trim()).filter(Boolean); // Memastikan tidak ada baris kosong
-    console.log('Dangerous URLs loaded:', dangerousUrls);
-});
+
 
 module.exports = async (client, message) => {
     
@@ -39,6 +32,16 @@ module.exports = async (client, message) => {
 
 
     //Anti-link feature
+
+    fs.readFile(dangerousUrlsPath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading dangerous URLs file:', err);
+            return;
+        }
+        dangerousUrls = data.split('\n').map(url => url.trim()).filter(Boolean); // Memastikan tidak ada baris kosong
+        console.log('Dangerous URLs loaded:', dangerousUrls);
+    });
+
     const messageContent = message.content.toLowerCase();
     const detectedUrl = dangerousUrls.find(url => messageContent.includes(url));
 
