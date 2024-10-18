@@ -4,6 +4,39 @@ const { KeyMongo } = require("key-mongo");
 const mongoose = require("mongoose");
 require('./server.js');
 
+// == ANTI-BADLINK FEATURE == //
+
+const path = require('path');
+const fs = require('fs');
+
+const filePath = path.join(__dirname, 'antilink.txt');
+let bannedUrls = [];
+
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) {
+      console.error('Error reading dangurls.txt:', err);
+      return;
+  }
+  bannedUrls = data.split(/\r?\n/).filter(url => url.trim() !== '');
+  console.log('Banned URLs loaded:', bannedUrls);
+});
+
+function containsBannedUrl(messageContent) {
+    const normalizedMessage = messageContent.toLowerCase(); // Normalisasi ke huruf kecil
+  
+    // Mengecek setiap URL yang dilarang
+    for (const bannedUrl of bannedUrls) {
+        const normalizedBannedUrl = bannedUrl.toLowerCase();
+        
+        // Memeriksa jika URL ada dalam pesan
+        if (normalizedMessage.includes(normalizedBannedUrl)) {
+            return true; // Mengembalikan true jika ditemukan
+        }
+    }
+    return false; // Mengembalikan false jika tidak ditemukan
+  }
+
+// == END OF ANTI-BADLINK FEATURE == //
 
 const client = new discord.Client({
     closeTimeout: 3_000 ,
@@ -60,6 +93,36 @@ process.on('uncaughtException', error => {
     client.logger.log("Uncaught Exception is detected, restarting...", "info");
     process.exit(1);
 });
+
+// == ANTI-BADLINK EVENT == //
+
+client.on('messageCreate', async (message) => {
+  if (message.author.bot || !message.content) return;
+
+    // Mengecek apakah pesan mengandung URL yang dilarang
+    if (containsBannedUrl(message.content)) {
+        try {
+            // Menghapus pesan jika mengandung URL yang terlarang
+            await message.delete();
+
+            // Mengirimkan embed peringatan ke channel
+            const alertEmbed = new EmbedBuilder()
+                .setColor('#FF0000')
+                .setTitle('⚠ Malicious Link Detected ⚠')
+                .setDescription('A message containing a banned URL was detected and deleted.')
+                .setFooter({ text: 'The link sent may be malicious. Don\'t try to open it.' })
+                .setTimestamp();
+
+            await message.channel.send({ embeds: [alertEmbed] });
+
+            console.log(`Deleted a message containing a banned URL from ${message.author.tag}`);
+        } catch (err) {
+            console.error('Failed to delete message:', err);
+        }
+    }
+})
+
+// == END OF ANTI-BADLINK EVENT == //
 
 client.login(config.token).catch(() => { client.logger.log('Invaid TOKEN!', "warn") });
 
