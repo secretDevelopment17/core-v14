@@ -94,7 +94,7 @@ module.exports = {
             caseID: client.cases,
             userID: user.id,
             globalName: user.user.globalName,
-            modType: "Muted",
+            modType: "Mute",
             moderator: message.author.id,
             reason: reason
         })
