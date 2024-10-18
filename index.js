@@ -4,7 +4,7 @@ const { KeyMongo } = require("key-mongo");
 const mongoose = require("mongoose");
 require('./server.js');
 
-// == ANTI-BADLINK FEATURE == //
+// ===== ANTI-BADLINK FEATURE ===== //
 
 const path = require('path');
 const fs = require('fs');
@@ -22,21 +22,19 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 });
 
 function containsBannedUrl(messageContent) {
-    const normalizedMessage = messageContent.toLowerCase(); // Normalisasi ke huruf kecil
+    const normalizedMessage = messageContent.toLowerCase();
   
-    // Mengecek setiap URL yang dilarang
     for (const bannedUrl of bannedUrls) {
         const normalizedBannedUrl = bannedUrl.toLowerCase();
         
-        // Memeriksa jika URL ada dalam pesan
         if (normalizedMessage.includes(normalizedBannedUrl)) {
-            return true; // Mengembalikan true jika ditemukan
+            return true; 
         }
     }
-    return false; // Mengembalikan false jika tidak ditemukan
+    return false; 
   }
 
-// == END OF ANTI-BADLINK FEATURE == //
+// ===== END OF ANTI-BADLINK FEATURE ===== //
 
 const client = new discord.Client({
     closeTimeout: 3_000 ,
@@ -94,19 +92,16 @@ process.on('uncaughtException', error => {
     process.exit(1);
 });
 
-// == ANTI-BADLINK EVENT == //
+// ===== ANTI-BADLINK EVENT ====== //
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot || !message.content) return;
 
-    // Mengecek apakah pesan mengandung URL yang dilarang
     if (containsBannedUrl(message.content)) {
         try {
-            // Menghapus pesan jika mengandung URL yang terlarang
             await message.delete();
 
-            // Mengirimkan embed peringatan ke channel
-            const alertEmbed = new EmbedBuilder()
+            const alertEmbed = new discord.EmbedBuilder()
                 .setColor('#FF0000')
                 .setTitle('⚠ Malicious Link Detected ⚠')
                 .setDescription('A message containing a banned URL was detected and deleted.')
@@ -122,7 +117,7 @@ client.on('messageCreate', async (message) => {
     }
 })
 
-// == END OF ANTI-BADLINK EVENT == //
+// ===== END OF ANTI-BADLINK EVENT ===== //
 
 client.login(config.token).catch(() => { client.logger.log('Invaid TOKEN!', "warn") });
 
