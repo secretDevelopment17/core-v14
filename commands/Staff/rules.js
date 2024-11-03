@@ -78,7 +78,7 @@ module.exports = {
             { name: "Discord Server", value: "https://dsc.gg/acronetwork" },
             { name: "Website", value: "https://acronetwork.my.id" },
             { name: "Status Page", value: "https://status.acronetwork.my.id" },
-            { name: "Minecraft Vote", value: "▪ https://minecraft-mp.com/server/335686/vote/ (primary)\n▪ https://topminecraftservers.org/vote/38697" },
+            { name: "Minecraft Vote", value: "▪ https://minecraft-mp.com/server/335686/vote/ (primary)\n▪ https://topminecraftservers.org/vote/38697\n▪ https://minecraftpocket-servers.com/server/129241/vote/" },
             { name: "Donate", value: "https://sociabuzz.com/acronetwork/tribe" },
             { name: "Social Media", value: "YouTube | TikTok | Instagram" }
         )
